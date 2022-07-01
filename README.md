@@ -25,13 +25,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```sh
-php composer.phar require --prefer-dist yii2mod/yii2-settings "*"
+php composer.phar require --prefer-dist rdbx/yii2-user-setting "*"
 ```
 
 or add
 
 ```
-"yii2mod/yii2-settings": "*"
+"rdbx/yii2-user-setting": "*"
 ```
 
 to the require section of your composer.json.
@@ -44,7 +44,7 @@ Configuration
 Before usage this extension, we'll also need to prepare the database.
 
 ```sh
-php yii migrate --migrationPath=@vendor/yii2mod/yii2-settings/migrations
+php yii migrate --migrationPath=@vendor/rdbx/yii2-user-setting/migrations
 ```
 
 **Module Setup**
@@ -52,7 +52,7 @@ php yii migrate --migrationPath=@vendor/yii2mod/yii2-settings/migrations
 To access the module, you need to configure the modules array in your application configuration:
 ```php
 'modules' => [
-    'settings' => [
+    'personal_settings' => [
         'class' => 'yii2mod\settings\Module',
     ],
 ],

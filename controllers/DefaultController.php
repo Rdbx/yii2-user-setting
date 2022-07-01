@@ -34,12 +34,12 @@ class DefaultController extends Controller
     /**
      * @var string search class name for searching
      */
-    public $searchClass = 'Redbox\PersonalSettings\models\search\SettingSearch';
+    public $searchClass = \Redbox\PersonalSettings\models\search\SettingSearch::class;
 
     /**
      * @var string model class name for CRUD operations
      */
-    public $modelClass = 'Redbox\PersonalSettings\models\SettingModel';
+    public $modelClass = \Redbox\PersonalSettings\models\SettingModel::class;
 
     /**
      * Returns a list of behaviors that this component should behave as.
