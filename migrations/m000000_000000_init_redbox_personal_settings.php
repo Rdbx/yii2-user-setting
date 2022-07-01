@@ -21,7 +21,7 @@ class m000000_000000_init_redbox_personal_settings extends Migration
 
         $this->createTable('{{%personal_settings}}', [
             'id'          => $this->primaryKey(),
-            'user_id'     => $this->integer()->unsigned(),
+            'user_id'     => $this->integer(),
             'type'        => $this->string(10)->notNull(),
             'section'     => $this->string()->notNull(),
             'key'         => $this->string()->notNull(),
