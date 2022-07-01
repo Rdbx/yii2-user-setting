@@ -26,7 +26,7 @@ return [
     'Description' => 'Description',
     'Created Date' => 'Created Date',
     'Updated Date' => 'Updated Date',
-    'Settings' => 'Settings',
+    'PersonalSettings' => 'PersonalSettings',
     'Create Setting' => 'Create Setting',
     'Select Type' => 'Select Type',
     'Select Section' => 'Select Section',

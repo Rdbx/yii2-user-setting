@@ -13,6 +13,7 @@ use Redbox\PersonalSettings\models\enumerables\SettingType;
  * This is the model class for table "{{%setting}}".
  *
  * @property int $id
+ * @property int $user_id
  * @property string $type
  * @property string $section
  * @property string $key
@@ -39,9 +40,10 @@ class SettingModel extends ActiveRecord
     {
         return [
             [['section', 'key', 'value'], 'required'],
-            [['section', 'key'], 'unique', 'targetAttribute' => ['section', 'key']],
+            [['user_id', 'section', 'key'], 'unique', 'targetAttribute' => ['user_id', 'section', 'key']],
             [['value', 'type'], 'string'],
             [['section', 'key', 'description'], 'string', 'max' => 255],
+            [['user_id'], 'integer'],
             [['status'], 'integer'],
             ['status', 'default', 'value' => SettingStatus::ACTIVE],
             ['status', 'in', 'range' => SettingStatus::getConstantsByName()],
@@ -56,6 +58,7 @@ class SettingModel extends ActiveRecord
     {
         return [
             'id' => Yii::t('yii2mod.settings', 'ID'),
+            'user_id' => Yii::t('yii2mod.settings', 'User ID'),
             'type' => Yii::t('yii2mod.settings', 'Type'),
             'section' => Yii::t('yii2mod.settings', 'Section'),
             'key' => Yii::t('yii2mod.settings', 'Key'),
@@ -115,17 +118,21 @@ class SettingModel extends ActiveRecord
     public function getSettings(): array
     {
         $result = [];
-        $settings = static::find()->select(['type', 'section', 'key', 'value'])->active()->asArray()->all();
+        $settings = static::find()->select(['user_id', 'type', 'section', 'key', 'value'])->active()->asArray()->all();
 
         foreach ($settings as $setting) {
+            $userId = $setting['user_id'];
             $section = $setting['section'];
             $key = $setting['key'];
-            $settingOptions = ['type' => $setting['type'], 'value' => $setting['value']];
+            $settingOptions = [
+                'type' => $setting['type'],
+                'value' => $setting['value']
+            ];
 
-            if (isset($result[$section][$key])) {
-                ArrayHelper::merge($result[$section][$key], $settingOptions);
+            if (isset($result[$userId][$section][$key])) {
+                ArrayHelper::merge($result[$userId][$section][$key], $settingOptions);
             } else {
-                $result[$section][$key] = $settingOptions;
+                $result[$userId][$section][$key] = $settingOptions;
             }
         }
 
@@ -135,6 +142,7 @@ class SettingModel extends ActiveRecord
     /**
      * Set setting
      *
+     * @param $user_id
      * @param $section
      * @param $key
      * @param $value
@@ -142,14 +150,19 @@ class SettingModel extends ActiveRecord
      *
      * @return bool
      */
-    public function setSetting($section, $key, $value, $type = null): bool
+    public function setSetting($user_id, $section, $key, $value, $type = null): bool
     {
-        $model = static::findOne(['section' => $section, 'key' => $key]);
+        $model = static::findOne([
+            'user_id' => $user_id,
+            'section' => $section,
+            'key' => $key
+        ]);
 
         if (empty($model)) {
             $model = new static();
         }
 
+        $model->user_id = $user_id;
         $model->section = $section;
         $model->key = $key;
         $model->value = strval($value);
@@ -166,6 +179,7 @@ class SettingModel extends ActiveRecord
     /**
      * Remove setting
      *
+     * @param $user_id
      * @param $section
      * @param $key
      *
@@ -173,9 +187,13 @@ class SettingModel extends ActiveRecord
      *
      * @throws \Exception
      */
-    public function removeSetting($section, $key)
+    public function removeSetting($user_id, $section, $key)
     {
-        $model = static::findOne(['section' => $section, 'key' => $key]);
+        $model = static::findOne([
+            'user_id' => $user_id,
+            'section' => $section,
+            'key' => $key
+        ]);
 
         if (!empty($model)) {
             return $model->delete();
@@ -197,14 +215,15 @@ class SettingModel extends ActiveRecord
     /**
      * Activates a setting
      *
+     * @param $user_id
      * @param $section
      * @param $key
      *
      * @return bool
      */
-    public function activateSetting($section, $key): bool
+    public function activateSetting($user_id, $section, $key): bool
     {
-        $model = static::findOne(['section' => $section, 'key' => $key]);
+        $model = static::findOne(['user_id' => $user_id, 'section' => $section, 'key' => $key]);
 
         if ($model && $model->status === SettingStatus::INACTIVE) {
             $model->status = SettingStatus::ACTIVE;
@@ -218,14 +237,15 @@ class SettingModel extends ActiveRecord
     /**
      * Deactivates a setting
      *
+     * @param $user_id
      * @param $section
      * @param $key
      *
      * @return bool
      */
-    public function deactivateSetting($section, $key): bool
+    public function deactivateSetting($user_id, $section, $key): bool
     {
-        $model = static::findOne(['section' => $section, 'key' => $key]);
+        $model = static::findOne(['user_id' => $user_id, 'section' => $section, 'key' => $key]);
 
         if ($model && $model->status === SettingStatus::ACTIVE) {
             $model->status = SettingStatus::INACTIVE;

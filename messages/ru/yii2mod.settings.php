@@ -26,7 +26,7 @@ return [
     'Description' => 'Описание',
     'Created Date' => 'Дата Создания',
     'Updated Date' => 'Дата Обновления',
-    'Settings' => 'Настройки',
+    'PersonalSettings' => 'Настройки',
     'Create Setting' => 'Создать Настройку',
     'Select Type' => 'Выберите Тип',
     'Select Section' => 'Выберите Раздел',

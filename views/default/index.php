@@ -12,7 +12,7 @@ use Redbox\PersonalSettings\models\SettingModel;
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $searchModel \Redbox\PersonalSettings\models\search\SettingSearch */
 
-$this->title = Yii::t('yii2mod.settings', 'Settings');
+$this->title = Yii::t('yii2mod.settings', 'PersonalSettings');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="setting-index">

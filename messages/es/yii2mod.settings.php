@@ -26,7 +26,7 @@ return [
     'Description' => 'Descripción',
     'Created Date' => 'Fecha de creación',
     'Updated Date' => 'Fecha de actualización',
-    'Settings' => 'Configuración',
+    'PersonalSettings' => 'Configuración',
     'Create Setting' => 'Crear configuración',
     'Select Type' => 'Seleccionar Tipo',
     'Select Section' => 'Seleccionar Sección',

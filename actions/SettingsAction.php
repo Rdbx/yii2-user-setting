@@ -67,7 +67,7 @@ class SettingsAction extends Action
     /**
      * @var string message to be set on successful save a model
      */
-    public $successMessage = 'Settings have been saved successfully.';
+    public $successMessage = 'PersonalSettings have been saved successfully.';
 
     /**
      * @var string the name of the settings view
@@ -134,7 +134,7 @@ class SettingsAction extends Action
             call_user_func($this->prepareModel, $model);
         } else {
             foreach ($model->attributes() as $attribute) {
-                $value = Yii::$app->settings->get($this->getSection($model), $attribute);
+                $value = Yii::$app->personal_settings->get($this->getSection($model), $attribute);
 
                 if (!is_null($value)) {
                     $model->{$attribute} = $value;
@@ -152,7 +152,7 @@ class SettingsAction extends Action
             call_user_func($this->saveSettings, $model);
         } else {
             foreach ($model->toArray() as $key => $value) {
-                Yii::$app->settings->set($this->getSection($model), $key, $value);
+                Yii::$app->personal_settings->set($this->getSection($model), $key, $value);
             }
         }
     }

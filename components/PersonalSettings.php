@@ -10,11 +10,11 @@ use yii\helpers\ArrayHelper;
 use Redbox\PersonalSettings\models\enumerables\SettingType;
 
 /**
- * Class Settings
+ * Class PersonalSettings
  *
  * @package Redbox\PersonalSettings\components
  */
-class Settings extends Component
+class PersonalSettings extends Component
 {
     /**
      * @var string setting model class name
@@ -35,7 +35,7 @@ class Settings extends Component
     /**
      * @var string the key used to store settings data in cache
      */
-    public $cacheKey = 'yii2mod-setting';
+    public $cacheKey = 'redbox-personal-setting';
 
     /**
      * @var \Redbox\PersonalSettings\models\SettingModel setting model
@@ -96,7 +96,7 @@ class Settings extends Component
      *
      * @return mixed
      */
-    public function get($section, $key, $default = null)
+    public function get($id, $section, $key, $default = null)
     {
         $items = $this->getSettingsConfig();
 
@@ -121,7 +121,7 @@ class Settings extends Component
      *
      * @return bool
      */
-    public function set($section, $key, $value, $type = null): bool
+    public function set($id, $section, $key, $value, $type = null): bool
     {
         if ($this->model->setSetting($section, $key, $value, $type)) {
             if ($this->invalidateCache()) {
@@ -140,7 +140,7 @@ class Settings extends Component
      *
      * @return bool
      */
-    public function has($section, $key): bool
+    public function has($id, $section, $key): bool
     {
         $setting = $this->get($section, $key);
 
@@ -155,7 +155,7 @@ class Settings extends Component
      *
      * @return bool
      */
-    public function remove($section, $key): bool
+    public function remove($id, $section, $key): bool
     {
         if ($this->model->removeSetting($section, $key)) {
             if ($this->invalidateCache()) {
@@ -184,7 +184,7 @@ class Settings extends Component
      *
      * @return bool
      */
-    public function activate($section, $key): bool
+    public function activate($id, $section, $key): bool
     {
         return $this->model->activateSetting($section, $key);
     }
@@ -197,9 +197,9 @@ class Settings extends Component
      *
      * @return bool
      */
-    public function deactivate($section, $key): bool
+    public function deactivate($id, $section, $key): bool
     {
-        return $this->model->deactivateSetting($section, $key);
+        return $this->model->deactivateSetting($id, $section, $key);
     }
 
     /**

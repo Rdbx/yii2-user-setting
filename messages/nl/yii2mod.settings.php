@@ -32,7 +32,7 @@ return [
     'Setting has been created.' => 'Instelling is aangemaakt',
     'Setting has been deleted.' => 'Instelling is verwijderd',
     'Setting has been updated.' => 'Instelling is bijgewerkt',
-    'Settings' => 'Instellingen',
+    'PersonalSettings' => 'Instellingen',
     'Status' => 'Status',
     'The requested page does not exist.' => 'De opgevraagde pagina bestaat niet',
     'Type' => 'Type',

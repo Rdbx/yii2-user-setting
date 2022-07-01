@@ -2,7 +2,7 @@
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
     </a>
-    <h1 align="center">Yii2 Settings Extension</h1>
+    <h1 align="center">Yii2 PersonalSettings Extension</h1>
     <br>
 </p>
 
@@ -76,7 +76,7 @@ To use the Setting Component, you need to configure the components array in your
 ```php
 'components' => [
     'settings' => [
-        'class' => 'yii2mod\settings\components\Settings',
+        'class' => 'yii2mod\settings\components\PersonalSettings',
     ],
 ],
 ```
@@ -175,7 +175,7 @@ use yii\widgets\ActiveForm;
 /* @var $model \app\models\forms\ConfigurationForm */
 /* @var $this \yii\web\View */
 
-$this->title = Yii::t('app', 'Manage Application Settings');
+$this->title = Yii::t('app', 'Manage Application PersonalSettings');
 ?>
 <?php $form = ActiveForm::begin(); ?>
 

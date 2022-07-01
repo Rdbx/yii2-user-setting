@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model \Redbox\PersonalSettings\models\SettingModel */
 
 $this->title = Yii::t('yii2mod.settings', 'Create Setting');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('yii2mod.settings', 'Settings'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('yii2mod.settings', 'PersonalSettings'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="setting-create">

@@ -26,7 +26,7 @@ return [
     'Description' => '描述',
     'Created Date' => '创建时间',
     'Updated Date' => '更新时间',
-    'Settings' => '设置项',
+    'PersonalSettings' => '设置项',
     'Create Setting' => '新建设置项',
     'Select Type' => '选择类型',
     'Select Section' => '选择节点',

@@ -78,7 +78,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Lists all Settings.
+     * Lists all PersonalSettings.
      *
      * @return mixed
      */
