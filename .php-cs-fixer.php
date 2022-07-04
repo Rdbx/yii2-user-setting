@@ -4,14 +4,14 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('vendor')
     ->in([__DIR__]);
 
-$config = PhpCsFixer\Config::create()
+$config = (new PhpCsFixer\Config())
     ->setUsingCache(false)
     ->setRules([
         '@Symfony' => true,
         'phpdoc_align' => false,
         'phpdoc_summary' => false,
-        'phpdoc_inline_tag' => false,
-        'pre_increment' => false,
+        'general_phpdoc_tag_rename' => false,
+        'increment_style' => ['style' => 'pre'],
         'heredoc_to_nowdoc' => false,
         'cast_spaces' => false,
         'include' => false,

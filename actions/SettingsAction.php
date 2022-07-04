@@ -95,11 +95,13 @@ class SettingsAction extends Action
      * Renders the settings form.
      *
      * @return string
+     * @throws InvalidConfigException
      */
     public function run()
     {
         /* @var $model Model */
         $model = Yii::createObject($this->modelClass);
+        /** @var FormEvent $event */
         $event = Yii::createObject(['class' => FormEvent::class, 'form' => $model]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -126,7 +128,9 @@ class SettingsAction extends Action
     /**
      * Prepares the model which will be used to validate the attributes.
      *
-     * @param Model $model
+     * @param  Model  $model
+     *
+     * @throws InvalidConfigException
      */
     protected function prepareModel(Model $model)
     {
@@ -144,7 +148,9 @@ class SettingsAction extends Action
     }
 
     /**
-     * @param Model $model
+     * @param  Model  $model
+     *
+     * @throws InvalidConfigException
      */
     protected function saveSettings(Model $model)
     {
@@ -158,9 +164,10 @@ class SettingsAction extends Action
     }
 
     /**
-     * @param Model $model
+     * @param  Model  $model
      *
      * @return string
+     * @throws InvalidConfigException
      */
     protected function getSection(Model $model): string
     {

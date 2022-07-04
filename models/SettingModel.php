@@ -3,12 +3,11 @@
 namespace Redbox\PersonalSettings\models;
 
 use Redbox\PersonalSettings\behaviors\DatetimeBehavior;
-use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use Redbox\PersonalSettings\models\enumerables\SettingStatus;
 use Redbox\PersonalSettings\models\enumerables\SettingType;
+use Yii;
+use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%setting}}".
@@ -27,7 +26,7 @@ use Redbox\PersonalSettings\models\enumerables\SettingType;
 class SettingModel extends ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName(): string
     {
@@ -35,7 +34,7 @@ class SettingModel extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules(): array
     {
@@ -53,7 +52,7 @@ class SettingModel extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels(): array
     {
@@ -72,7 +71,7 @@ class SettingModel extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors(): array
     {
@@ -83,8 +82,6 @@ class SettingModel extends ActiveRecord
 
     /**
      * Creates an [[ActiveQueryInterface]] instance for query purpose.
-     *
-     * @return SettingQuery
      */
     public static function find(): SettingQuery
     {
@@ -92,29 +89,27 @@ class SettingModel extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function afterDelete()
     {
         parent::afterDelete();
 
-        Yii::$app->settings->invalidateCache();
+        Yii::$app->personal_settings->invalidateCache();
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
 
-        Yii::$app->settings->invalidateCache();
+        Yii::$app->personal_settings->invalidateCache();
     }
 
     /**
      * Return array of settings
-     *
-     * @return array
      */
     public function getSettings($id): array
     {
@@ -131,7 +126,7 @@ class SettingModel extends ActiveRecord
             $key = $setting['key'];
             $settingOptions = [
                 'type' => $setting['type'],
-                'value' => $setting['value']
+                'value' => $setting['value'],
             ];
 
             if (isset($result[$section][$key])) {
@@ -152,15 +147,13 @@ class SettingModel extends ActiveRecord
      * @param $key
      * @param $value
      * @param null $type
-     *
-     * @return bool
      */
     public function setSetting($user_id, $section, $key, $value, $type = null): bool
     {
         $model = static::findOne([
             'user_id' => $user_id,
             'section' => $section,
-            'key' => $key
+            'key' => $key,
         ]);
 
         if (empty($model)) {
@@ -197,7 +190,7 @@ class SettingModel extends ActiveRecord
         $model = static::findOne([
             'user_id' => $user_id,
             'section' => $section,
-            'key' => $key
+            'key' => $key,
         ]);
 
         if (!empty($model)) {
@@ -209,8 +202,6 @@ class SettingModel extends ActiveRecord
 
     /**
      * Remove all settings
-     *
-     * @return int
      */
     public function removeAllSettings(): int
     {
