@@ -2,6 +2,7 @@
 
 namespace Redbox\PersonalSettings\models;
 
+use Redbox\PersonalSettings\behaviors\DatetimeBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -30,7 +31,7 @@ class SettingModel extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return '{{%setting}}';
+        return '{{%personal_settings}}';
     }
 
     /**
@@ -76,7 +77,7 @@ class SettingModel extends ActiveRecord
     public function behaviors(): array
     {
         return [
-            TimestampBehavior::class,
+            DatetimeBehavior::class,
         ];
     }
 
@@ -115,13 +116,17 @@ class SettingModel extends ActiveRecord
      *
      * @return array
      */
-    public function getSettings(): array
+    public function getSettings($id): array
     {
         $result = [];
-        $settings = static::find()->select(['user_id', 'type', 'section', 'key', 'value'])->active()->asArray()->all();
+        $settings = static::find()
+            ->select(['user_id', 'type', 'section', 'key', 'value'])
+            ->andWhere(['user_id' => $id])
+            ->active()
+            ->asArray()
+            ->all();
 
         foreach ($settings as $setting) {
-            $userId = $setting['user_id'];
             $section = $setting['section'];
             $key = $setting['key'];
             $settingOptions = [
@@ -129,10 +134,10 @@ class SettingModel extends ActiveRecord
                 'value' => $setting['value']
             ];
 
-            if (isset($result[$userId][$section][$key])) {
-                ArrayHelper::merge($result[$userId][$section][$key], $settingOptions);
+            if (isset($result[$section][$key])) {
+                ArrayHelper::merge($result[$section][$key], $settingOptions);
             } else {
-                $result[$userId][$section][$key] = $settingOptions;
+                $result[$section][$key] = $settingOptions;
             }
         }
 

@@ -98,7 +98,7 @@ class PersonalSettings extends Component
      */
     public function get($id, $section, $key, $default = null)
     {
-        $items = $this->getSettingsConfig();
+        $items = $this->getSettingsConfig($id);
 
         if (isset($items[$section][$key])) {
             $this->setting = ArrayHelper::getValue($items[$section][$key], 'value');
@@ -123,8 +123,8 @@ class PersonalSettings extends Component
      */
     public function set($id, $section, $key, $value, $type = null): bool
     {
-        if ($this->model->setSetting($section, $key, $value, $type)) {
-            if ($this->invalidateCache()) {
+        if ($this->model->setSetting($id, $section, $key, $value, $type)) {
+            if ($this->invalidatePersonalCache($id)) {
                 return true;
             }
         }
@@ -142,7 +142,7 @@ class PersonalSettings extends Component
      */
     public function has($id, $section, $key): bool
     {
-        $setting = $this->get($section, $key);
+        $setting = $this->get($id, $section, $key);
 
         return !empty($setting);
     }
@@ -157,8 +157,8 @@ class PersonalSettings extends Component
      */
     public function remove($id, $section, $key): bool
     {
-        if ($this->model->removeSetting($section, $key)) {
-            if ($this->invalidateCache()) {
+        if ($this->model->removeSetting($id, $section, $key)) {
+            if ($this->invalidatePersonalCache($id)) {
                 return true;
             }
         }
@@ -186,7 +186,7 @@ class PersonalSettings extends Component
      */
     public function activate($id, $section, $key): bool
     {
-        return $this->model->activateSetting($section, $key);
+        return $this->model->activateSetting($id, $section, $key);
     }
 
     /**
@@ -207,17 +207,17 @@ class PersonalSettings extends Component
      *
      * @return array
      */
-    protected function getSettingsConfig(): array
+    protected function getSettingsConfig($id): array
     {
         if (!$this->cache instanceof Cache) {
-            $this->items = $this->model->getSettings();
+            $this->items = $this->model->getSettings($id);
         } else {
-            $cacheItems = $this->cache->get($this->cacheKey);
+            $cacheItems = $this->cache->get("{$this->cacheKey}-{$id}");
             if (!empty($cacheItems)) {
                 $this->items = $cacheItems;
             } else {
-                $this->items = $this->model->getSettings();
-                $this->cache->set($this->cacheKey, $this->items);
+                $this->items = $this->model->getSettings($id);
+                $this->cache->set("{$this->cacheKey}-{$id}", $this->items);
             }
         }
 
@@ -229,10 +229,10 @@ class PersonalSettings extends Component
      *
      * @return bool
      */
-    public function invalidateCache(): bool
+    public function invalidatePersonalCache($id): bool
     {
         if ($this->cache !== null) {
-            $this->cache->delete($this->cacheKey);
+            $this->cache->delete("{$this->cacheKey}-{$id}");
             $this->items = null;
         }
 
